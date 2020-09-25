@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import fetch from 'unfetch'
+import { SWRConfig } from 'swr'
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+const fetcher = url => fetch(url).then(r => r.json())
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SWRConfig value={{
+      fetcher: fetcher,
+      suspense: true,
+    }}>
+      <App />
+    </SWRConfig>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
